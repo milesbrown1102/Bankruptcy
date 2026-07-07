@@ -1,0 +1,196 @@
+{
+  "original": {
+    "names": [
+      " Net Income to Total Assets",
+      " ROA(A) before interest and % after tax",
+      " ROA(B) before interest and depreciation after tax",
+      " Net worth/Assets",
+      " Debt ratio %",
+      " Persistent EPS in the Last Four Seasons",
+      " Retained Earnings to Total Assets",
+      " Net profit before tax/Paid-in capital",
+      " Per Share Net profit before tax (Yuan ??)"
+    ],
+    "stats": {
+      " Net Income to Total Assets": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.80776,
+        "median": 0.810619
+      },
+      " ROA(A) before interest and % after tax": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.558625,
+        "median": 0.559802
+      },
+      " ROA(B) before interest and depreciation after tax": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.553589,
+        "median": 0.552278
+      },
+      " Net worth/Assets": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.886823,
+        "median": 0.888593
+      },
+      " Debt ratio %": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.113177,
+        "median": 0.111407
+      },
+      " Persistent EPS in the Last Four Seasons": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.228813,
+        "median": 0.224544
+      },
+      " Retained Earnings to Total Assets": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.934733,
+        "median": 0.937672
+      },
+      " Net profit before tax/Paid-in capital": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.182715,
+        "median": 0.178456
+      },
+      " Per Share Net profit before tax (Yuan ??)": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.184361,
+        "median": 0.179709
+      }
+    },
+    "examples": {
+      "distressed": {
+        " Net Income to Total Assets": 0.766297,
+        " ROA(A) before interest and % after tax": 0.490215,
+        " ROA(B) before interest and depreciation after tax": 0.488597,
+        " Net worth/Assets": 0.812574,
+        " Debt ratio %": 0.187426,
+        " Persistent EPS in the Last Four Seasons": 0.195944,
+        " Retained Earnings to Total Assets": 0.912923,
+        " Net profit before tax/Paid-in capital": 0.154012,
+        " Per Share Net profit before tax (Yuan ??)": 0.155306
+      },
+      "healthy": {
+        " Net Income to Total Assets": 0.811492,
+        " ROA(A) before interest and % after tax": 0.561219,
+        " ROA(B) before interest and depreciation after tax": 0.553563,
+        " Net worth/Assets": 0.890619,
+        " Debt ratio %": 0.109381,
+        " Persistent EPS in the Last Four Seasons": 0.225111,
+        " Retained Earnings to Total Assets": 0.938058,
+        " Net profit before tax/Paid-in capital": 0.179021,
+        " Per Share Net profit before tax (Yuan ??)": 0.180236
+      }
+    },
+    "class_counts": {
+      "bankrupt": 220,
+      "non_bankrupt": 6599
+    }
+  },
+  "knn30": {
+    "names": [
+      " Net Income to Total Assets",
+      " ROA(A) before interest and % after tax",
+      " ROA(B) before interest and depreciation after tax",
+      " Net worth/Assets",
+      " Debt ratio %",
+      " Persistent EPS in the Last Four Seasons",
+      " Retained Earnings to Total Assets",
+      " Net profit before tax/Paid-in capital",
+      " Per Share Net profit before tax (Yuan ??)"
+    ],
+    "stats": {
+      " Net Income to Total Assets": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.807983,
+        "median": 0.810861
+      },
+      " ROA(A) before interest and % after tax": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.558823,
+        "median": 0.559965
+      },
+      " ROA(B) before interest and depreciation after tax": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.553502,
+        "median": 0.552706
+      },
+      " Net worth/Assets": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.887555,
+        "median": 0.890286
+      },
+      " Debt ratio %": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.112619,
+        "median": 0.110107
+      },
+      " Persistent EPS in the Last Four Seasons": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.228774,
+        "median": 0.225351
+      },
+      " Retained Earnings to Total Assets": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.934809,
+        "median": 0.937706
+      },
+      " Net profit before tax/Paid-in capital": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.182785,
+        "median": 0.179188
+      },
+      " Per Share Net profit before tax (Yuan ??)": {
+        "min": 0.0,
+        "max": 1.0,
+        "mean": 0.184348,
+        "median": 0.180387
+      }
+    },
+    "examples": {
+      "distressed": {
+        " Net Income to Total Assets": 0.761288,
+        " ROA(A) before interest and % after tax": 0.478731,
+        " ROA(B) before interest and depreciation after tax": 0.482842,
+        " Net worth/Assets": 0.813601,
+        " Debt ratio %": 0.187512,
+        " Persistent EPS in the Last Four Seasons": 0.194739,
+        " Retained Earnings to Total Assets": 0.91064,
+        " Net profit before tax/Paid-in capital": 0.152595,
+        " Per Share Net profit before tax (Yuan ??)": 0.152277
+      },
+      "healthy": {
+        " Net Income to Total Assets": 0.811596,
+        " ROA(A) before interest and % after tax": 0.561328,
+        " ROA(B) before interest and depreciation after tax": 0.553922,
+        " Net worth/Assets": 0.892102,
+        " Debt ratio %": 0.108232,
+        " Persistent EPS in the Last Four Seasons": 0.225962,
+        " Retained Earnings to Total Assets": 0.938032,
+        " Net profit before tax/Paid-in capital": 0.179682,
+        " Per Share Net profit before tax (Yuan ??)": 0.18099
+      }
+    },
+    "class_counts": {
+      "bankrupt": 220,
+      "non_bankrupt": 6599
+    }
+  }
+}
