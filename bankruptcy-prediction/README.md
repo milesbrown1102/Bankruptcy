@@ -1,0 +1,148 @@
+# RiskDesk — Bankruptcy Prediction System
+
+Corporate bankruptcy risk prediction on the Taiwan Bankruptcy Dataset
+(6,819 firms, 220 bankrupt ≈ 3.2%). Full-stack: FastAPI model-serving
+backend + React analytics frontend, with SHAP explanations, counterfactuals,
+and conformal-prediction uncertainty.
+
+## Features
+
+**Predict tab**
+- Financial-ratio form with one-click healthy / distressed / median example loaders
+- Per-model probability bars with tuned decision-threshold ticks, consensus gauge, vote strip
+- **SHAP waterfall** — which features pushed this specific company toward / away from bankruptcy
+- **Counterfactual** — the minimal feature changes that would move a flagged company below its threshold
+- **Conformal prediction** — a 90%-coverage prediction set; ambiguous cases are shown as genuinely uncertain
+- Plain-English tooltips on every financial ratio
+
+**Batch scoring tab**
+- Drag-and-drop CSV upload, whole portfolio scored at once
+- Sortable results table (by probability / risk tier), risk-tier pills, CSV export
+
+**Model analytics tab**
+- Metric selector (F1 / recall / precision / PR-AUC / ROC-AUC / MCC / balanced acc / accuracy)
+- Hoverable CV-vs-holdout bars, interactive ROC + PR curves, confusion-matrix grid
+
+## Methodology (what makes the numbers trustworthy)
+
+- `StratifiedKFold` throughout (critical at 3.2% prevalence)
+- **Leak-free imputation**: imputers live inside each model pipeline, refit per CV
+  fold, and never see the label (fixes the earlier bankrupt/non-bankrupt-conditioned
+  imputation)
+- **Feature selection on the training split only** (point-biserial top-k), applied
+  unchanged to the untouched holdout
+- Class imbalance handled per model: `class_weight='balanced'` (LR/RF/SVM/DT),
+  `scale_pos_weight` (XGBoost), SMOTE inside imblearn pipelines so it only
+  resamples training folds (GB/MLP)
+- Decision thresholds tuned to maximize bankrupt-class F1 on cross-validated
+  training predictions, evaluated once on a stratified 20% holdout
+- Split-conformal calibration set reserved from training for the uncertainty band
+- 7 models, trained once, persisted to `backend/artifacts/`; the API only serves
+
+Two imputation variants (`mean` = median imputer, `knn` = KNN k=15) are exposed
+via the top-bar switch. Now that both impute leak-free, they score almost
+identically — which is the honest result, since the raw data has essentially no
+real missingness. (The synthetic-missingness imputation *study* still lives in
+`src/` and is a separate exercise.)
+
+## Requirements
+
+- Python 3.10+ (tested on 3.13)
+- Node.js 18+ and npm  (WSL: `sudo apt install nodejs npm`, or use nvm)
+
+## Setup
+
+```bash
+# from the project root
+python3 -m venv venv
+source venv/bin/activate
+pip install -r backend/requirements.txt
+
+cd frontend && npm install && cd ..
+```
+
+## Important: train the models locally first
+
+The saved model artifacts are **not shipped** in this bundle, because pickled
+scikit-learn models can fail to load across different sklearn versions. Train
+them once in your own environment — it takes a few minutes:
+
+```bash
+source venv/bin/activate
+cd backend/ml
+python train.py
+```
+
+This writes `models_*.joblib`, `background_*.joblib`, `conformal_*.joblib`,
+`metrics.json`, and `features.json` into `backend/artifacts/`.
+
+If `train.py` can't find the dataset, it reads
+`data/raw/Taiwan_Bankruptcy_Dataset.xlsx` (sheet `data`) directly — no need to
+run the older `src/` pipeline first for the app.
+
+## Running the app
+
+Two terminals:
+
+**Terminal 1 — API**
+```bash
+source venv/bin/activate
+cd backend
+uvicorn api.main:app --reload --port 8000
+```
+
+**Terminal 2 — frontend**
+```bash
+cd frontend
+npm run dev
+```
+
+Open the URL Vite prints (usually http://localhost:5173). Dev server proxies
+`/api` to port 8000. In WSL, just open the URL in your Windows browser.
+
+## Trying batch scoring
+
+A ready-made `sample_companies.csv` (15 real firms, 5 bankrupt) sits in the
+project root. On the Batch tab, drop it in — the 5 distressed firms should
+surface at the top of the ranking.
+
+## Results snapshot (holdout, tuned thresholds, leak-free)
+
+Accuracy is ~96–97% for everything — including a "never bankrupt" baseline —
+which is exactly why the dashboard doesn't lead with it. The honest
+bankrupt-class numbers:
+
+| Model | Recall | F1 | PR-AUC |
+|---|---|---|---|
+| Random Forest | 0.68 | 0.46 | 0.51 |
+| XGBoost | 0.66 | 0.46 | 0.40 |
+| Neural Network | 0.57 | 0.49 | 0.46 |
+| Logistic Regression | 0.43 | 0.43 | 0.37 |
+
+## Project structure
+
+```
+├── backend/
+│   ├── ml/
+│   │   ├── data_prep.py      # leak-free loading + training-only feature selection
+│   │   └── train.py          # training pipeline (run to build artifacts)
+│   ├── api/
+│   │   ├── main.py           # FastAPI: predict / explain / batch / summary
+│   │   └── explain.py        # SHAP, counterfactuals, conformal p-values
+│   ├── artifacts/            # generated by train.py (gitignored)
+│   └── requirements.txt
+├── frontend/
+│   └── src/
+│       ├── App.jsx
+│       └── components/       # Predict, Batch, Dashboard, Gauge, ShapWaterfall, Info
+├── src/                      # original research pipeline (imputation study) + legacy GUI
+├── data/raw/                 # Taiwan dataset
+└── sample_companies.csv      # demo file for batch scoring
+```
+
+## Roadmap / possible extensions
+
+- SHAP global summary (beeswarm) on the analytics tab
+- Model-versioning + drift monitoring
+- Survival analysis (time-to-bankruptcy) if time-indexed data is added
+- Dockerized `docker-compose up` deployment

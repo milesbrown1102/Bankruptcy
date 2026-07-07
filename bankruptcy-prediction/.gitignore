@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+node_modules/
+frontend/dist/
+backend/artifacts/
+data/processed/*.xlsx
+outputs/*.png
